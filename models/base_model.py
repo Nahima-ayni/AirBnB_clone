@@ -15,11 +15,17 @@ class BaseModel:
         """
             Initializes a new instance of the BaseModel class.
         """
-        if kwargs is not None:
-
-        self.created_at = datetime.datetime.now()
-        self.updated_at = datetime.datetime.now()
-        self.id = str(uuid.uuid4())
+        if kwargs:
+            for key, value in kwargs.items():
+                if key != '__class__':
+                    if key == 'created_at' or key == 'updated_at':
+                        setattr(self, key, datetime.datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f'))
+                    else:
+                        setattr(self, key, value)
+        else:
+            self.created_at = datetime.datetime.now()
+            self.updated_at = datetime.datetime.now()
+            self.id = str(uuid.uuid4())
 
     def __str__(self):
         """
