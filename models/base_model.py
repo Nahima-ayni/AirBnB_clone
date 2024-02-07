@@ -11,10 +11,12 @@ class BaseModel:
     """
         class BaseModel that defines all common attributes/methods for other classes
     """
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """
             Initializes a new instance of the BaseModel class.
         """
+        if kwargs is not None:
+
         self.created_at = datetime.datetime.now()
         self.updated_at = datetime.datetime.now()
         self.id = str(uuid.uuid4())
