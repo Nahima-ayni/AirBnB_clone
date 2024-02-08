@@ -21,6 +21,8 @@ class TestBaseModel(unittest.TestCase):
         self.assertTrue(hasattr(base_model, 'created_at'))
         self.assertTrue(hasattr(base_model, 'updated_at'))
 
+
+
     def test_instance_methods(self):
         """Test if the BaseModel instance has the required methods."""
         base_model = BaseModel()
