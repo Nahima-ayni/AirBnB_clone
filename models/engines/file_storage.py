@@ -3,18 +3,17 @@ import os
 
 
 class FileStorage:
-    def __init__(self, file_path):
-        """
-            Initialize the private class instance.
-        """
-        self.__file_path = file_path
-        self.__objects = {}
+    """
+        Initialize the private class instance.
+    """
+    __file_path = "file.json"
+    __objects = {}
 
     def all(self):
         """
             Return the dictionary containing all stored objects.
         """
-        return self.__objects
+        return FileStorage.__objects
 
     def new(self, obj):
         """
@@ -23,24 +22,29 @@ class FileStorage:
         class_name = obj.__class__.__name__
         object_id = obj.id
         key = f"{class_name}.{object_id}"
-        self.__objects[key] = obj
+        FileStorage.__objects[key] = obj
 
     def save(self):
         """
             Serialize the storage dictionary and save it to the JSON file.
         """
-        json_string = json.dumps(self.__objects)
-        with open(self.__file_path, 'w') as file:
-            file.write(json_string)
+        serialized_objects = {}
+        for key, obj in FileStorage.__objects.items():
+            serialized_objects[key] = obj.to_dict()
+        
+        with open(FileStorage.__file_path, 'w') as f:
+            json.dump(serialized_objects, f)
 
     def reload(self):
         """
             Load data from the JSON file and populate the storage dictionary.
         """
-        if os.path.exists(self.__file_path):
-            try:
-                with open(self.__file_path, 'r') as file:
-                    data = json.load(file)
-                    self.__objects = data
-            except FileNotFoundError:
-                pass
+        try:
+            with open(FileStorage.__file_path, 'r') as f:
+                serialized_objects = json.load(f)
+                for key, value in serialized_objects.items():
+                    clas_name, obj_id = key.split('.')
+                    obj= eval(class_name)(**value)
+                    FileStorage.__objects[key] = obj
+        except FileNotFoundError:
+            pass
