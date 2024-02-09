@@ -3,6 +3,11 @@
 import cmd
 from models.base_model import BaseModel
 from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 from models.engine.file_storage import storage
 
 class HBNBCommand(cmd.Cmd):
@@ -25,7 +30,7 @@ class HBNBCommand(cmd.Cmd):
 			print("** class name missing **")
 			return
 
-		classes = {"BaseModel": BaseModel, "User": User}
+		classes = {"BaseModel": BaseModel, "User": User "State": State, "City": City, "Amenity": Amenity, "Place": Place, "Review": Review}
 		args = arg.split()
 
 		if args[0] not in classes:
@@ -43,7 +48,7 @@ class HBNBCommand(cmd.Cmd):
 			return
 
 		args = arg.split()
-		if args[0] not in {"BaseModel", "User"}:
+        if args[0] not in {"BaseModel", "User", "State", "City", "Amenity", "Place", "Review"}:
 			print("** class doesn't exist **")
 			return
 
@@ -83,7 +88,7 @@ class HBNBCommand(cmd.Cmd):
 
 	def do_all(self, arg):
 		"""Prints all string representation of all instances."""
-		classes = {"BaseModel": BaseModel, "User": User}
+		classes = {"BaseModel": BaseModel, "User": User, "State", "City", "Amenity", "Place", "Review"}
 
 		if arg and arg not in classes:
 			print("** class doesn't exist **")
@@ -104,7 +109,7 @@ class HBNBCommand(cmd.Cmd):
 			return
 
 		args = arg.split()
-		if args[0] not in {"BaseModel", "User"}:
+		if args[0] not in {"BaseModel", "User", "State", "City", "Amenity", "Place", "Review"}:
 			print("** class doesn't exist **")
 			return
 
