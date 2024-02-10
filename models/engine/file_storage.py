@@ -35,7 +35,8 @@ class FileStorage:
             Serialize the storage dictionary and save it to the JSON file.
         """
         with open(FileStorage.__file_path, 'w') as f:
-            json.dump({k: v.to_dict() for k, v in FileStorage.__objects.items()}, f)
+            json.dump({
+                k: v.to_dict() for k, v in FileStorage.__objects.items()}, f)
 
     def reload(self):
         """
@@ -47,7 +48,8 @@ class FileStorage:
                 for key, value in data.items():
                     class_name = value['__class__']
                     del value['__class__']
-                    module = __import__('models.' + cls_name.lower(), fromlist=[cls_name])
+                    module = __import__(
+                            'models.' + cls_name.lower(), fromlist=[cls_name])
                     cls = getattr(module, cls_name)
                     self.new(cls(**value))
         except FileNotFoundError:
