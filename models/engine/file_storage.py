@@ -12,6 +12,9 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
+    def __init__(self, filename="file.json"):
+        self.filename = filename
+
     def all(self):
         """
             Return the dictionary containing all stored objects.
@@ -32,7 +35,7 @@ class FileStorage:
             Serialize the storage dictionary and save it to the JSON file.
         """
         with open(FileStorage.__file_path, 'w') as f:
-            json.dump({k: v.to_dict() for k, v in FileStorage.__objects,items()}, f)
+            json.dump({k: v.to_dict() for k, v in FileStorage.__objects.items()}, f)
 
     def reload(self):
         """
@@ -43,7 +46,7 @@ class FileStorage:
                 data = json.load(f)
                 for key, value in data.items():
                     class_name = value['__class__']
-                    del value['__class__'
+                    del value['__class__']
                     module = __import__('models.' + cls_name.lower(), fromlist=[cls_name])
                     cls = getattr(module, cls_name)
                     self.new(cls(**value))

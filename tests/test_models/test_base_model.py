@@ -3,11 +3,18 @@
 """
     imports necessary modules
 """
-
 import unittest
 import sys
-sys.path.append('../')
+import os
 
+# Ensure that the parent directory is in the PYTHONPATH
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.abspath(os.path.join(current_dir, '..'))
+grand_parent_dir = os.path.abspath(os.path.join(parent_dir, '..'))
+sys.path.insert(0, parent_dir)
+sys.path.insert(0, grand_parent_dir)
+
+# Import BaseModel from the models module
 from models.base_model import BaseModel
 from datetime import datetime
 
