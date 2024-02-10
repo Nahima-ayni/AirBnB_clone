@@ -4,6 +4,7 @@
     imports necessary modules
 """
 import unittest
+import uuid
 import sys
 import os
 
