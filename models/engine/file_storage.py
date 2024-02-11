@@ -3,6 +3,7 @@
 """import modules"""
 import json
 import os
+from models.base_model import BaseModel
 
 
 class FileStorage:
@@ -45,12 +46,9 @@ class FileStorage:
         try:
             with open(FileStorage.__file_path, 'r') as f:
                 data = json.load(f)
-                for key, value in data.items():
-                    class_name = value['__class__']
-                    del value['__class__']
-                    module = __import__(
-                            'models.' + cls_name.lower(), fromlist=[cls_name])
-                    cls = getattr(module, cls_name)
-                    self.new(cls(**value))
+                for obj in data.values():
+                    cls = obj.pop('__class__', None)
+                    if cls:
+                        FileStorage.__objects[cls + '.' + obj['id']] = eval(cls)(**obj)
         except FileNotFoundError:
             pass
