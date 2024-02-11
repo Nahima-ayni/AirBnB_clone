@@ -17,7 +17,7 @@ class BaseModel:
         """
             Initializes a new instance of the BaseModel class.
         """
-        if (len(kwargs) > 0):
+        if kwargs:
             for key, value in kwargs.items():
                 if key == 'created_at' or key == 'updated_at':
                     setattr(self, key, datetime.datetime.strptime(
@@ -35,8 +35,7 @@ class BaseModel:
             Returns a string representation of the
             BaseModel object
         """
-        return "[" + self.__class__.__name__ + "] (" + self.id + ") " +\
-                str(self.__dict__)
+                return f"[BaseModel] ({self.id}) {self.__dict__}"
     def save(self):
         """
             Updates the public instance attribute
