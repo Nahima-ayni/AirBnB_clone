@@ -1,79 +1,78 @@
 #!/usr/bin/python3
+"""
+Unittest for the BaseModel class  Attributes and its methods
+"""
 
-"""
-    imports necessary modules
-"""
+
 import unittest
 import uuid
-import sys
-import os
-
-# Ensure that the parent directory is in the PYTHONPATH
-current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.abspath(os.path.join(current_dir, '..'))
-grand_parent_dir = os.path.abspath(os.path.join(parent_dir, '..'))
-sys.path.insert(0, parent_dir)
-sys.path.insert(0, grand_parent_dir)
-
-# Import BaseModel from the models module
+import datetime
 from models.base_model import BaseModel
-from datetime import datetime
 
 
 class TestBaseModel(unittest.TestCase):
-    """Test cases for the BaseModel class."""
-    def test_instance_attributes(self):
-        """Test if the BaseModel instance has the required attributes."""
-        base_model = BaseModel()
-        self.assertTrue(hasattr(base_model, 'id'))
-        self.assertTrue(hasattr(base_model, 'created_at'))
-        self.assertTrue(hasattr(base_model, 'updated_at'))
 
+    def setUp(self):
+        self.base = BaseModel()
 
-
-    def test_instance_methods(self):
-        """Test if the BaseModel instance has the required methods."""
-        base_model = BaseModel()
-        self.assertTrue(hasattr(base_model, 'save'))
-        self.assertTrue(hasattr(base_model, 'to_dict'))
-        self.assertTrue(callable(getattr(base_model, 'save')))
-        self.assertTrue(callable(getattr(base_model, 'to_dict')))
-
-    def test_save_method(self):
-        """Test if the save() method updates the updated_at attribute."""
-        base_model = BaseModel()
-        old_updated_at = base_model.updated_at
-        base_model.save()
-
-    def test_to_dict_method(self):
-        """Test if the to_dict() method returns the expected dictionary format."""
-        base_model = BaseModel()
-        base_model = BaseModel()
-        base_model_dict = base_model.to_dict()
-        self.assertEqual(base_model_dict['__class__'], 'BaseModel')
-        self.assertEqual(type(base_model_dict['created_at']), str)
-        self.assertEqual(type(base_model_dict['updated_at']), str)
-
-    def test_init_method(self):
-        """Test if the __init__() method initializes attributes correctly."""
-        now = datetime.now()
-        base_model = BaseModel(created_at=now.isoformat(), updated_at=now.isoformat())
-        self.assertEqual(type(base_model.created_at), datetime)
-        self.assertEqual(type(base_model.created_at), datetime)
-
-
-    def test_str_method(self):
-        """Test if the __str__() method generates the expected string representation."""
-        base_model = BaseModel()
-        self.assertEqual(str(base_model), "[BaseModel] ({}) {}".format(base_model.id, base_model.__dict__))
-
+    def test_new_instance(self):
+        self.assertIsInstance(self.base, BaseModel)
+        self.base.x = 35
+        self.base.y = 50
+        self.assertEqual(self.base.x, 35)
+        self.assertEqual(self.base.y, 50)
 
     def test_id(self):
-        """Test if the id attribute is unique for each BaseModel instance."""
-        base_model_01 = BaseModel()
-        base_model_02 = BaseModel()
+        self.assertEqual(len(self.base.id), len(str(uuid.uuid4())))
+        self.assertIsInstance(uuid.UUID(self.base.id), uuid.UUID)
+        self.assertIsInstance(self.base.id, str)
 
-        self.assertNotEqual(base_model_01.id, base_model_02.id)
+    def test_created_at(self):
+        self.assertIsInstance(self.base.created_at, datetime.datetime)
+        self.assertIsInstance(self.base.created_at.day, int)
+        self.assertLessEqual(self.base.created_at, datetime.datetime.now())
 
-if __name__ == '__main__':
+    def test_updated_at(self):
+        self.assertIsInstance(self.base.updated_at, datetime.datetime)
+        self.assertIsInstance(self.base.updated_at.day, int)
+        self.assertLessEqual(self.base.updated_at, datetime.datetime.now())
+
+    def test_has_dict(self):
+        self.assertIn('__dict__', dir(self.base))
+
+    def test_save(self):
+        now = datetime.datetime.now()
+        self.assertNotEqual(self.base.updated_at, now)
+        self.base.save()
+        now = datetime.datetime.now()
+        self.assertNotEqual(now.microsecond, self.base.updated_at.microsecond)
+        self.assertEqual(self.base.updated_at.second, now.second)
+        self.assertEqual(self.base.updated_at.minute, now.minute)
+        self.assertEqual(self.base.updated_at.hour, now.hour)
+        self.assertEqual(self.base.updated_at.day, now.day)
+        self.assertEqual(self.base.updated_at.month, now.month)
+        self.assertEqual(self.base.updated_at.year, now.year)
+
+    def test_to_dict(self):
+        old_c_at = self.base.created_at
+        old_p_at = self.base.updated_at
+        r = self.base.to_dict()
+        self.assertIsInstance(r, dict)
+        self.assertEqual(len(r), 4)
+        self.assertIn('__class__', self.base.__dict__)
+        self.assertIsInstance(self.base.created_at, str)
+        self.assertGreaterEqual(len(self.base.created_at), 7)
+        self.assertNotEqual(self.base.created_at, old_c_at)
+        self.assertNotIsInstance(self.base.created_at, datetime.datetime)
+        self.assertIsInstance(self.base.updated_at, str)
+        self.assertGreaterEqual(len(self.base.updated_at), 7)
+        self.assertNotEqual(self.base.updated_at, old_p_at)
+        self.assertNotIsInstance(self.base.updated_at, datetime.datetime)
+
+    def test_base_return(self):
+        self.assertEqual(str(self.base), "[BaseModel] ({}) \
+{}".format(self.base.id, str(self.base.__dict__)))
+
+
+if __name__ == "__main__":
     unittest.main()
