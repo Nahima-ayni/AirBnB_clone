@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
 import cmd
+import re
+import os
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
