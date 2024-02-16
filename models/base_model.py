@@ -1,22 +1,24 @@
-#!/usr/bin/python3
 
-"""
-    import uuid for unique id and datetime for time and date
-"""
+#!/usr/bin/python3
+"""This script is the base model"""
+
 import uuid
-import datetime
+from datetime import datetime
 from models import storage
 
 
 class BaseModel:
-    """
-        class BaseModel that defines all common
-            attributes/methods for other classes
-    """
+
+    """Class from which all other classes will inherit"""
+
     def __init__(self, *args, **kwargs):
+        """Initializes instance attributes
+
+        Args:
+            - *args: list of arguments
+            - **kwargs: dict of key-values arguments
         """
-            Initializes a new instance of the BaseModel class.
-        """
+
         if kwargs is not None and kwargs != {}:
             for key in kwargs:
                 if key == "created_at":
@@ -28,36 +30,28 @@ class BaseModel:
                 else:
                     self.__dict__[key] = kwargs[key]
         else:
-            self.created_at = datetime.datetime.now()
-            self.updated_at = datetime.datetime.now()
             self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
             storage.new(self)
 
     def __str__(self):
-        """
-            Returns a string representation of the
-            BaseModel object
-        """
-                return "[{}] ({}) {}".\
+        """Returns official string representation"""
+
+        return "[{}] ({}) {}".\
             format(type(self).__name__, self.id, self.__dict__)
+
     def save(self):
-        """
-            Updates the public instance attribute
-            updated_at with the current datetime.
-        """
-        self.updated_at = datetime.datetime.now()
+        """updates the public instance attribute updated_at"""
+
+        self.updated_at = datetime.now()
         storage.save()
 
     def to_dict(self):
-        """
-            Returns a dictionary containing all keys/values of
-            __dict__ of the instance
+        """returns a dictionary containing all keys/values of __dict__"""
 
-            Returns:
-                dict: A dictionary containing all instance attributes.
-        """
-        dic = self.__dict__.copy()
-        dic['__class__'] = self.__class__.__name__
-        dic['created_at'] = self.created_at.isoformat()
-        dic['updated_at'] = self.updated_at.isoformat()
-        return dic
+        my_dict = self.__dict__.copy()
+        my_dict["__class__"] = type(self).__name__
+        my_dict["created_at"] = my_dict["created_at"].isoformat()
+        my_dict["updated_at"] = my_dict["updated_at"].isoformat()
+        return my_dict
