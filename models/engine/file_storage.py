@@ -1,8 +1,11 @@
 #!/usr/bin/python3
 """Module for FileStorage class."""
 import datetime
+<<<<<<< HEAD
 import json
 import os
+=======
+>>>>>>> main
 
 
 class FileStorage:
@@ -27,7 +30,13 @@ class FileStorage:
             json.dump(d, f)
 
     def classes(self):
+<<<<<<< HEAD
         """Returns a dictionary of valid classes and their references"""
+=======
+        """
+            All the Classes are stored in a dictionary and then returens the dictionary.
+        """
+>>>>>>> main
         from models.base_model import BaseModel
         from models.user import User
         from models.state import State
@@ -36,6 +45,7 @@ class FileStorage:
         from models.place import Place
         from models.review import Review
 
+<<<<<<< HEAD
         classes = {"BaseModel": BaseModel,
                    "User": User,
                    "State": State,
@@ -43,6 +53,17 @@ class FileStorage:
                    "Amenity": Amenity,
                    "Place": Place,
                    "Review": Review}
+=======
+        classes = {
+                'BaseModel': BaseModel,
+                'User': User,
+                'Amenity': Amenity,
+                'City': City,
+                'Place': Place,
+                'State': State,
+                'Review': Review,
+                }
+>>>>>>> main
         return classes
 
     def reload(self):
