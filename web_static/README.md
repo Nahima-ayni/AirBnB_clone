@@ -141,3 +141,56 @@ p {
     color: green;
 }
 ```
+
+In CSS, box properties refer to a set of properties that control the layout and dimensions of an element's box model. The box model consists of content, padding, border, and margin areas, which together determine the size and spacing of an element on the page. Here are the main box properties in CSS:
+
+1. **Width and Height**: These properties determine the width and height of the content area of an element, excluding padding, border, and margin.
+
+    ```css
+    .box {
+        width: 200px;
+        height: 150px;
+    }
+    ```
+
+2. **Padding**: Padding is the space between the content area and the element's border. It can be set individually for each side (top, right, bottom, left) or all sides at once.
+
+    ```css
+    .box {
+        padding: 20px; /* Applies 20px padding to all sides */
+        padding-top: 10px; /* Applies 10px padding to the top */
+    }
+    ```
+
+3. **Border**: The border property specifies the width, style, and color of the border around an element's padding box.
+
+    ```css
+    .box {
+        border: 1px solid #000; /* 1px solid black border */
+    }
+    ```
+
+4. **Margin**: Margin is the space outside an element's border. It separates the element from other elements in the layout.
+
+    ```css
+    .box {
+        margin: 10px; /* Applies 10px margin to all sides */
+        margin-top: 5px; /* Applies 5px margin to the top */
+    }
+    ```
+
+5. **Box Sizing**: The box-sizing property determines how the total width and height of an element are calculated, including padding and border, or excluding them.
+
+    ```css
+    .box {
+        box-sizing: border-box; /* Includes padding and border in the width and height */
+    }
+    ```
+
+6. **Overflow**: The overflow property controls what happens when content overflows the bounds of its containing element.
+
+    ```css
+    .box {
+        overflow: auto; /* Adds a scrollbar when content overflows */
+    }
+    ```
